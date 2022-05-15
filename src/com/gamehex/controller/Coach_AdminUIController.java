@@ -130,8 +130,6 @@ public class Coach_AdminUIController implements Initializable {
                 String searchKeyword = newValue.toLowerCase();
                 if (String.valueOf(Coaches.getCoachId()).contains(searchKeyword)) {
                     return true;
-                } else if (Coaches.getRating().toString().contains(searchKeyword)) {
-                    return true;
                 } else {
                     return false;
                 }

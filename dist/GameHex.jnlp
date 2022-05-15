@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="GameHex.jar" size="3735859" download="eager" />
+    <jar href="GameHex.jar" size="3735880" download="eager" />
     <jar href="lib\AnimateFX-1.2.1.jar" size="94267" download="eager" />
     <jar href="lib\commons-io-2.11.0-javadoc.jar" size="1268433" download="eager" />
     <jar href="lib\commons-io-2.11.0-sources.jar" size="398939" download="eager" />
