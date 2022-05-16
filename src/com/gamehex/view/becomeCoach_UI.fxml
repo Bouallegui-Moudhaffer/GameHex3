@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,17 +14,22 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="367.0" prefWidth="969.0" style="-fx-background-color: #172333;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gamehex.controller.Coach_UIController">
+<AnchorPane id="AnchorPane" prefHeight="367.0" prefWidth="969.0" style="-fx-background-color: #172333;" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gamehex.controller.Coach_UIController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <VBox layoutX="36.0" layoutY="94.0" prefHeight="190.0" prefWidth="90.0" spacing="38.0">
          <children>
-            <Label text="Username" textFill="WHITE">
+            <Label text="Summoner" textFill="WHITE">
                <font>
                   <Font name="Corbel Bold" size="16.0" />
                </font>
             </Label>
-            <Label text="E-MAIL" textFill="WHITE">
+            <Label style="-fx-background-color: transparent; -fx-text-fill: white;" stylesheets="@../css/Stylesheet.css" text="Region" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label text="Motto" textFill="WHITE">
                <font>
                   <Font name="Corbel Bold" size="16.0" />
                </font>
@@ -32,15 +38,45 @@
       </VBox>
       <VBox layoutX="126.0" layoutY="89.0" prefHeight="171.0" prefWidth="192.0" spacing="15.0">
          <children>
-            <JFXTextField fx:id="txt_username" />
-            <JFXTextField fx:id="txt_email" />
+            <JFXTextField fx:id="txt_summoner" focusColor="WHITE" promptText="Write Summoner..." styleClass="jfx-text-field" stylesheets="@../css/Stylesheet.css" unFocusColor="WHITE" />
+            <JFXComboBox fx:id="jfxcb_region" prefHeight="31.0" prefWidth="198.0" promptText="Choose Region..." styleClass="jfx-combo-box" stylesheets="@../css/Stylesheet.css">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXComboBox>
+            <JFXTextField fx:id="txt_motto">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></JFXTextField>
+            <JFXButton fx:id="btn_insert" alignment="CENTER" buttonType="RAISED" contentDisplay="RIGHT" onAction="#handleButtonAction" prefHeight="31.0" prefWidth="207.0" styleClass="buttonfx" text="Insert" textAlignment="JUSTIFY" textFill="WHITE">
+               <effect>
+                  <DropShadow color="#898997" />
+               </effect>
+               <ripplerFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="BLACK" />
+                        <Stop color="#25135d" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </ripplerFill>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
          </children>
       </VBox>
       <Label layoutX="556.0" layoutY="27.0" text="SEARCH" textFill="WHITE">
          <font>
             <Font name="Corbel Bold" size="16.0" />
          </font></Label>
-      <JFXButton fx:id="btn_insert" buttonType="RAISED" layoutX="346.0" layoutY="197.0" onAction="#handleButtonAction" prefHeight="35.0" prefWidth="114.0" stylesheets="@../css/Stylesheet.css" text="Insert" textFill="WHITE">
+      <JFXButton fx:id="btn_delete" buttonType="RAISED" layoutX="689.0" layoutY="81.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="174.0" styleClass="buttonfx" text="Disable Coach Status" textFill="WHITE">
          <effect>
             <DropShadow color="#898997" />
          </effect>
@@ -52,19 +88,9 @@
                </stops>
             </LinearGradient>
          </ripplerFill>
-      </JFXButton>
-      <JFXButton fx:id="btn_delete" buttonType="RAISED" layoutX="689.0" layoutY="81.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="174.0" stylesheets="@../css/Stylesheet.css" text="Disable Coach Status" textFill="WHITE">
-         <effect>
-            <DropShadow color="#898997" />
-         </effect>
-         <ripplerFill>
-            <LinearGradient endX="1.0" endY="1.0">
-               <stops>
-                  <Stop color="BLACK" />
-                  <Stop color="#25135d" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </ripplerFill>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXTextField fx:id="keywordTextField" layoutX="658.0" layoutY="17.0" promptText="Keyword..." />
       <Label fx:id="label_warning" layoutX="41.0" layoutY="36.0" visible="false">
@@ -80,8 +106,11 @@
             </LinearGradient>
          </textFill>
       </Label>
-      <JFXButton fx:id="btn_back" layoutX="19.0" layoutY="17.0" onAction="#handleBackBtn" prefHeight="39.0" prefWidth="100.0" text="Back" />
-      <VBox layoutX="27.0" layoutY="260.0" prefHeight="77.0" prefWidth="942.0">
+      <JFXButton fx:id="btn_back" layoutX="19.0" layoutY="17.0" onAction="#handleBackBtn" prefHeight="39.0" prefWidth="100.0" styleClass="buttonfx" text="Back" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXButton>
+      <VBox layoutX="27.0" layoutY="315.0" prefHeight="77.0" prefWidth="942.0">
          <children>
             <HBox prefHeight="84.0" prefWidth="839.0" spacing="80.0">
                <children>
@@ -129,7 +158,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="77.0" prefWidth="188.0" spacing="25.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="22.0" prefWidth="193.0" text="Type" textFill="WHITE">
+                        <Label alignment="CENTER" prefHeight="22.0" prefWidth="193.0" text="Tier" textFill="WHITE">
                            <font>
                               <Font name="Corbel Bold" size="18.0" />
                            </font>
@@ -149,7 +178,4 @@
          </children>
       </VBox>
     </children>
-   <stylesheets>
-      <URL value="@../css/Stylesheet.css" />
-   </stylesheets>
 </AnchorPane>

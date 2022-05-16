@@ -5,6 +5,7 @@
  */
 package com.gamehex.controller;
 
+import static com.gamehex.controller.Coach_UIController.seconds;
 import com.gamehex.entity.Session;
 import com.gamehex.entity.User;
 import com.jfoenix.controls.JFXButton;
@@ -44,21 +45,24 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import com.gamehex.utils.MyConnection;
+import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.DateCell;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
+import javax.swing.Timer;
+import org.controlsfx.control.Rating;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -107,6 +111,10 @@ public class createSession_UI_Controller implements Initializable {
     @FXML
     private JFXButton btnHome;
     private double sessionRating;
+    @FXML
+    private Rating appRating;
+    @FXML
+    private Label rateValue;
 
     public TableColumn<coachingSession, SimpleIntegerProperty> getCol_id() {
         return col_id;
@@ -165,17 +173,7 @@ public class createSession_UI_Controller implements Initializable {
             if (validateUsername() & validateDatePicker() & validateTimePicker()) {
                 System.out.println("Test Successful!");
                 if (insertSession()) {
-                    Stage stage = new Stage();
-                    Parent root;
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("/com/gamehex/view/rateMyApp.fxml"));
-                        Scene scene = new Scene(root);
-                        stage.setTitle("Rating");
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Coach_UIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    startTimer();
                 }
 
             }
@@ -370,12 +368,11 @@ public class createSession_UI_Controller implements Initializable {
     }
 
     private boolean updateSession() {
-        String request = "select id from coach where user_id = (select id from user where name = '" + cb_coach.getValue().toString() + "'";
+        String request = "select id from coach where user_id = (select id from user where name = " + cb_coach.getValue();
         Statement st;
         String name = "";
         try {
-            st = cnx.createStatement();
-            st.executeQuery(request);
+            st = cnx.prepareStatement(request);
             ResultSet rs = st.executeQuery(request);
             while (rs.next()) {
                 name = rs.getString("name");
@@ -388,28 +385,21 @@ public class createSession_UI_Controller implements Initializable {
         LocalTime timeField = tp_session.getValue();
         DateTime startValue = new DateTime(dateField.getYear(), dateField.getMonthValue(), dateField.getDayOfMonth(), timeField.getHour(), timeField.getMinute());
 
-        String query = "UPDATE session SET start = '" + startValue + "' WHERE id = " + handleMouseAction() + "";
+        appRating.ratingProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            rateValue.setText(""+newValue);
+        });
+        String query ="";
+        if(dp_session.getValue() != null | tp_session.getValue() != null){
+            query = "UPDATE session SET start = '" + startValue + "', rating = '" + rateValue.getText() + "' WHERE id = " + handleMouseAction() + "";
+        }else{
+            query = "UPDATE session SET rating = '" + rateValue.getText() + "' WHERE id = " + handleMouseAction() + "";
+        }
+        
         executeQuery(query);
         showSessions();
         return true;
     }
 
-//    public void updateSession(){
-//        String query = "UPDATE session SET coachAttendee= ?, playerAttendee= ?, startTime= ?, Date= ?,"
-//                + " WHERE sessionId= ?;";
-//        try {
-//            PreparedStatement pst = cnx.prepareStatement(query);
-//            pst.setString(1, txt_coach.getText());
-//            pst.setString(2, txt_player.getText());
-//            pst.setString(3, tp_session.getValue().toString());
-//            pst.setString(4, dp_session.getValue().toString());
-//            pst.setInt(5, Integer.parseInt(txt_sessionId.getText()));
-//            pst.executeUpdate();
-//        } catch (NumberFormatException | SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        showSessions();
-//    }
     private boolean validateUsername() {
         if (cb_coach.getSelectionModel().isEmpty()) {
             setStyle(cb_coach);
@@ -524,6 +514,30 @@ public class createSession_UI_Controller implements Initializable {
     public void getSessionRating(double sessionRating) {
         this.sessionRating = sessionRating;
         System.out.println(this.sessionRating);
+    }
+
+    public void startTimer() {
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                seconds--;
+                if (seconds == 0) {
+                    Stage stage = new Stage();
+                    Parent root;
+                    try {
+                        root = FXMLLoader.load(getClass().getResource("/com/gamehex/view/rateMyApp.fxml"));
+                        Scene scene = new Scene(root);
+                        stage.setTitle("Rating");
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Coach_UIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        timer.start();
     }
 
 }

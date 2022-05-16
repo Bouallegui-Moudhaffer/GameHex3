@@ -9,14 +9,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="358.0" prefWidth="747.0" style="-fx-background-color: #172333;" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gamehex.controller.HomeScreen_Controller">
    <children>
-      <JFXButton fx:id="btn_overlay" layoutX="48.0" layoutY="220.0" onAction="#handlebtn" prefHeight="54.0" prefWidth="273.0" text="Get Summoner" textFill="WHITE" />
-      <JFXButton fx:id="btn_coach" layoutX="597.0" layoutY="24.0" onAction="#handlebtn" text="Become a Coach" textFill="WHITE" />
+      <JFXButton fx:id="btn_overlay" layoutX="48.0" layoutY="220.0" onAction="#handlebtn" prefHeight="54.0" prefWidth="273.0" styleClass="buttonfx" text="Get Summoner" textFill="WHITE" />
+      <JFXButton fx:id="btn_coach" layoutX="597.0" layoutY="24.0" onAction="#handlebtn" styleClass="buttonfx" text="Become a Coach" textFill="WHITE" />
       <Label layoutX="41.0" layoutY="172.0" text="Find out about Pro Players" textFill="WHITE">
          <font>
             <Font name="Corbel Bold" size="24.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btn_sessions" layoutX="390.0" layoutY="220.0" onAction="#handlebtn" prefHeight="54.0" prefWidth="273.0" text="Schedule Session" textFill="WHITE" />
+      <JFXButton fx:id="btn_sessions" layoutX="390.0" layoutY="220.0" onAction="#handlebtn" prefHeight="54.0" prefWidth="273.0" styleClass="buttonfx" text="Schedule Session" textFill="WHITE" />
       <Label layoutX="372.0" layoutY="177.0" text="Schedule a coaching session" textFill="WHITE">
          <font>
             <Font name="Corbel Bold" size="24.0" />

@@ -209,7 +209,7 @@ public class getSummoner implements Initializable {
     }
     
     private Summoner getSummoner(){
-        Orianna.setRiotAPIKey("RGAPI-efa44a94-511b-4238-81e3-1cf691756754");
+        Orianna.setRiotAPIKey("RGAPI-e6be4734-0ccc-4fe4-9792-12b62e112f68");
         Orianna.setDefaultRegion(Region.valueOf(jfxcb_region.getValue()));
         if (validateUsername()){
             Summoner summoner = Summoner.named(txt_summoner.getText()).get();

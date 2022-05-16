@@ -6,7 +6,6 @@
 package com.gamehex.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.gamehex.entity.Coaches;
 import com.gamehex.entity.Session;
@@ -39,12 +38,25 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import com.gamehex.utils.MyConnection;
+import com.jfoenix.controls.JFXComboBox;
+import com.merakianalytics.orianna.Orianna;
+import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Region;
+import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import javax.swing.Timer;
+import org.controlsfx.control.Notifications;
 
 /**
  *
  * @passwd Moudhaffer
  */
 public class Coach_UIController implements Initializable {
+
+    static int seconds = 10;
 
     @FXML
     private Button btn_insert;
@@ -56,14 +68,9 @@ public class Coach_UIController implements Initializable {
     @FXML
     private Label label;
     @FXML
-    private JFXTextField txt_username;
-    private JFXPasswordField txt_passwd;
-    @FXML
     private JFXTextField keywordTextField;
     @FXML
     private Label label_warning;
-    @FXML
-    private JFXTextField txt_email;
     @FXML
     private JFXButton btn_back;
     @FXML
@@ -74,27 +81,37 @@ public class Coach_UIController implements Initializable {
     private Label lastName_content;
     @FXML
     private Label type_content;
+    @FXML
+    private JFXTextField txt_summoner;
+    @FXML
+    private JFXComboBox<String> jfxcb_region;
+    @FXML
+    private JFXTextField txt_motto;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        System.out.println("You Clicked me!");
         if (event.getSource() == btn_insert) {
-            if (validateUsername() & validateEmail()) {
-                if (insertCoach()) {
-                    id_content.setVisible(true);
-                    username_content.setVisible(true);
-                    lastName_content.setVisible(true);
-                    type_content.setVisible(true);
-                    Stage stage = new Stage();
-                    Parent root;
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("/com/gamehex/view/rateMyApp.fxml"));
-                        Scene scene = new Scene(root);
-                        stage.setTitle("Rating");
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Coach_UIController.class.getName()).log(Level.SEVERE, null, ex);
+            if (validateMotto()) {
+                if (jfxcb_region.getSelectionModel().isEmpty()) {
+                    new animatefx.animation.Shake(jfxcb_region).play();
+                } else {
+                    jfxcb_region.setStyle(null);
+                    if (insertCoach()) {
+                        id_content.setVisible(true);
+                        username_content.setVisible(true);
+                        lastName_content.setVisible(true);
+                        type_content.setVisible(true);
+                        Stage stage = new Stage();
+                        Parent root;
+                        try {
+                            root = FXMLLoader.load(getClass().getResource("/com/gamehex/view/rateMyApp.fxml"));
+                            Scene scene = new Scene(root);
+                            stage.setTitle("Rating");
+                            stage.setScene(scene);
+                            stage.show();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Coach_UIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }
@@ -109,11 +126,11 @@ public class Coach_UIController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        fillJFXComboBox();
         id_content.setVisible(false);
         username_content.setVisible(false);
         lastName_content.setVisible(false);
         type_content.setVisible(false);
-        showCoaches();
     }
 
     //Getters & Setters
@@ -176,7 +193,6 @@ public class Coach_UIController implements Initializable {
     public void showCoaches() {
 
         //ObservableList<Coaches> list = getCoachList();
-
         //Setting ID field value
         id_content.setText("" + this.user.getUserID());
         id_content.setStyle("-fx-background-color:#273B56;");
@@ -187,18 +203,32 @@ public class Coach_UIController implements Initializable {
         lastName_content.setText("" + this.user.getLastName());
         lastName_content.setStyle("-fx-background-color:#273B56;");
         //Setting profileInfo field
-        type_content.setText("" + this.user.getRole());
+        type_content.setText("" + getTier());
         type_content.setStyle("-fx-background-color:#273B56;");
     }
 
     public boolean insertCoach() {
-        
-        
-        String query = "INSERT INTO coach(user_id,rating) VALUES (?,?)";
+
+        String query = "INSERT INTO coach(user_id, rating, tier, image_url, motto) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = cnx.prepareStatement(query);
             pst.setInt(1, this.user.getUserID());
-            pst.setInt(2,0);
+            pst.setInt(2, 0);
+            if (!txt_summoner.getText().equals("")) {
+                String rank = getTier();
+                if (rank.toUpperCase().equals("Diamond".toUpperCase())
+                        || rank.toUpperCase().equals("GrandMaster".toUpperCase())
+                        || rank.toUpperCase().equals("Master".toUpperCase())
+                        || rank.toUpperCase().equals("Challenger".toUpperCase())) {
+                    pst.setString(2, rank);
+                } else {
+                    Notifications.create()
+                            .title("Rank Not High Enough")
+                            .text("We only accept Coaches with a SoloQ Rank of Diamond or Higher!")
+                            .threshold(3, Notifications.create().title("Collapsed Notification"))
+                            .showWarning();
+                }
+            }
             pst.executeUpdate();
             System.out.println("User Added sucessfully");
         } catch (SQLException ex) {
@@ -215,9 +245,9 @@ public class Coach_UIController implements Initializable {
         showCoaches();
         return true;
     }
-    
-    public boolean giveRating(){
-        
+
+    public boolean giveRating() {
+
         String request = "select AVG(rating) from session where coach_id ="
                 + " (select id from coach where user_id = ?);";
         Coaches coach = new Coaches();
@@ -225,11 +255,13 @@ public class Coach_UIController implements Initializable {
             PreparedStatement psst = cnx.prepareCall(request);
             psst.setInt(1, this.user.getUserID());
             ResultSet rs = psst.executeQuery(request);
-            while(rs.next()){
+            while (rs.next()) {
                 coach.setRating(rs.getDouble("rating"));
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Coach_UIController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Coach_UIController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         String query = "UPDATE coach SET rating = ? WHERE id = ?";
@@ -254,42 +286,24 @@ public class Coach_UIController implements Initializable {
 
     private boolean validateUsername() {
         Pattern p = Pattern.compile("[a-zA-Z0-9_]+");
-        Matcher m = p.matcher(txt_username.getText());
-        if ((txt_username.getText().length() != 0) && (m.find() && m.group().equals(txt_username.getText()))) {
-            txt_username.setEffect(null);
+        Matcher m = p.matcher(txt_summoner.getText());
+        if ((txt_summoner.getText().length() != 0) && (m.find() && m.group().equals(txt_summoner.getText()))) {
+            txt_summoner.setEffect(null);
             return true;
         } else {
-            setStyle(txt_username);
+            setStyle(txt_summoner);
             return false;
         }
     }
 
-    private boolean validatePassword() {
+    private boolean validateMotto() {
         Pattern p = Pattern.compile("[a-zA-Z0-9_]+");
-        Matcher m = p.matcher(txt_passwd.getText());
-        if ((txt_passwd.getText().length() != 0)
-                && (m.find() && m.group().equals(txt_passwd.getText()))) {
-            txt_passwd.setEffect(null);
+        Matcher m = p.matcher(txt_motto.getText());
+        if ((txt_motto.getText().length() != 0)) {
+            txt_motto.setEffect(null);
             return true;
         } else {
-            new animatefx.animation.Shake(txt_passwd).play();
-            InnerShadow in = new InnerShadow();
-            in.setColor(Color.web("#f80000"));
-            txt_passwd.setEffect(in);
-            return false;
-        }
-    }
-
-    private boolean validateEmail() {
-        Pattern p = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
-        Matcher m = p.matcher(txt_email.getText());
-        if ((txt_email.getText().length() != 0) && (m.find()
-                && m.group().equals(txt_email.getText()))
-                    && (txt_email.getText().equals(user.getEmail()))) {
-            txt_email.setEffect(null);
-            return true;
-        } else {
-            setStyle(txt_email);
+            setStyle(txt_motto);
             return false;
         }
     }
@@ -318,9 +332,50 @@ public class Coach_UIController implements Initializable {
                 stage.show();
                 Stage stage2 = (Stage) btn_back.getScene().getWindow();
                 stage2.close();
+
             } catch (IOException ex) {
-                Logger.getLogger(getSummoner.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(getSummoner.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public String getTier() {
+        Summoner summ = getSummoner();
+        String tier = "";
+        try {
+            tier = summ.getLeague(Queue.RANKED_SOLO).getTier().toString();
+        } catch (NullPointerException ex) {
+            tier = "Unranked";
+        }
+        return tier;
+    }
+
+    private Summoner getSummoner() {
+        Orianna.setRiotAPIKey("RGAPI-e6be4734-0ccc-4fe4-9792-12b62e112f68");
+        Orianna.setDefaultRegion(Region.valueOf(jfxcb_region.getValue()));
+        if (validateUsername()) {
+            Summoner summoner = Summoner.named(txt_summoner.getText()).get();
+            return summoner;
+        }
+        return null;
+    }
+
+    private void fillJFXComboBox() {
+        List<String> listRegions = new ArrayList();
+        listRegions.add("NORTH_AMERICA");
+        listRegions.add("BRAZIL");
+        listRegions.add("EUROPE_NORTH_EAST");
+        listRegions.add("EUROPE_WEST");
+        listRegions.add("JAPAN");
+        listRegions.add("KOREA");
+        listRegions.add("LATIN_AMERICA_NORTH");
+        listRegions.add("LATIN_AMERICA_SOUTH");
+        listRegions.add("NORTH_AMERICA");
+        listRegions.add("OCEANIA");
+        listRegions.add("RUSSIA");
+        listRegions.add("TURKEY");
+        ObservableList<String> items = FXCollections.observableArrayList(listRegions);
+        jfxcb_region.setItems(items);
     }
 }

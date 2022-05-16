@@ -17,6 +17,7 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.Rating?>
 
 <AnchorPane id="AnchorPane" prefHeight="571.0" prefWidth="890.0" style="-fx-background-color: #172333;" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gamehex.controller.createSession_UI_Controller">
     <children>
@@ -26,7 +27,7 @@
          </image>
       </ImageView>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <TableView fx:id="tv_sessions" layoutY="242.0" onMouseClicked="#handleMouseAction" prefHeight="253.0" prefWidth="890.0">
+      <TableView fx:id="tv_sessions" layoutY="294.0" onMouseClicked="#handleMouseAction" prefHeight="253.0" prefWidth="890.0">
         <columns>
           <TableColumn fx:id="col_id" prefWidth="87.0" text="ID" />
             <TableColumn fx:id="col_Player" prefWidth="141.0" text="Player" />
@@ -64,6 +65,8 @@
                   </LinearGradient>
                </defaultColor>
             </JFXTimePicker>
+            <Rating fx:id="appRating" prefHeight="32.0" prefWidth="191.0" />
+            <Label fx:id="rateValue" prefHeight="21.0" prefWidth="182.0" text="Label" visible="false" />
          </children>
       </VBox>
       <VBox layoutX="8.0" layoutY="48.0" prefHeight="281.0" prefWidth="77.0" spacing="45.0">
