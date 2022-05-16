@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gamehex.controller.LoadProductsAdminController">
+    <children>
+       <AnchorPane prefHeight="519.0" prefWidth="262.0" style="-fx-background-color: #172333;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox layoutY="564.0" prefHeight="82.0" prefWidth="262.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="564.0">
+                     <children>
+                        <Pane prefHeight="83.0" prefWidth="262.0" style="-fx-background-color: #FA2C56; -fx-background-radius: 5;">
+                           <children>
+                              <Label layoutX="25.0" layoutY="17.0" text="Home page" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children></VBox>
+                  <Pane layoutY="86.0" prefHeight="61.0" prefWidth="262.0" style="-fx-background-color: #FA2C56; -fx-background-radius: 5;">
+                     <children>
+                        <Label layoutX="25.0" layoutY="17.0" text="GameHex" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+      
+      <TextField fx:id="filterText" layoutX="277.0" layoutY="19.0" />
+      <Button fx:id="exportToPdf" layoutX="1012.0" layoutY="33.0" mnemonicParsing="false" text="Export to PDF" />
+      <Button fx:id="exportToExcel" layoutX="1007.0" layoutY="76.0" mnemonicParsing="false" text="Export To Excel" />
+      <TextField fx:id="name" layoutX="818.0" layoutY="129.0" />
+      <Label layoutX="750.0" layoutY="133.0" text="Name" />
+      <TextField fx:id="description" layoutX="818.0" layoutY="168.0" />
+      <Label layoutX="750.0" layoutY="172.0" text="Description" />
+      <TextField fx:id="state" layoutX="819.0" layoutY="207.0" />
+      <Label layoutX="751.0" layoutY="211.0" text="State" />
+      <TextField fx:id="review" layoutX="820.0" layoutY="249.0" />
+      <Label layoutX="752.0" layoutY="253.0" text="Review" />
+      <TextField fx:id="price" layoutX="821.0" layoutY="290.0" />
+      <Label layoutX="753.0" layoutY="294.0" text="Price" />
+      <TextField fx:id="supplierID" layoutX="822.0" layoutY="330.0" />
+      <Label layoutX="754.0" layoutY="334.0" text="Supplier ID" />
+      <TableView fx:id="tvProducts" layoutX="270.0" layoutY="107.0" prefHeight="248.0" prefWidth="457.0">
+        <columns>
+          <TableColumn fx:id="colID" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="colDescription" prefWidth="75.0" text="Description" />
+            <TableColumn fx:id="colState" prefWidth="75.0" text="State" />
+            <TableColumn fx:id="colPrice" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="colReview" prefWidth="75.0" text="Review" />
+        </columns>
+      </TableView>
+      <Button layoutX="-130.0" layoutY="-54.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="286.0" layoutY="374.0" mnemonicParsing="false" onMouseClicked="#InsertProduct" text="Insert" />
+      <Button layoutX="352.0" layoutY="374.0" mnemonicParsing="false" onMouseClicked="#UpdateProduct" text="Update" />
+      <Button layoutX="426.0" layoutY="374.0" mnemonicParsing="false" onMouseClicked="#DeleteProduct" text="Delete" />
+      <TextField fx:id="keywordTextField" layoutX="825.0" layoutY="390.0" />
+      <Label layoutX="757.0" layoutY="394.0" text="Search" />
+      <TextField fx:id="ID" layoutX="825.0" layoutY="430.0" />
+      <Label layoutX="757.0" layoutY="434.0" text="ID" />
+   </children>
+</AnchorPane>

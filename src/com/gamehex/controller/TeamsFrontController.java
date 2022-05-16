@@ -225,7 +225,7 @@ public class TeamsFrontController implements Initializable {
                     & validateEmail(memberMail3) & validateEmail(memberMail4) & validateEmail(memberMail5) & validateEmail(memberMail6)
                     & validatePhone(memberPh1) & validatePhone(memberPh2) & validatePhone(memberPh3)
                     & validatePhone(memberPh4) & validatePhone(memberPh5) & validatePhone(memberPh6)) {
-                insertTeam();
+                insertTeam1();
             }
         
                 
@@ -358,17 +358,18 @@ public class TeamsFrontController implements Initializable {
     private void insertTeam() throws IOException {
 
         y = getSaltString();
-        System.out.println(y );
+        System.out.println(y + "dzedzdz");
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         com.twilio.rest.api.v2010.account.Message messages = com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber("+216" + memberPh1.getText()),
                 new PhoneNumber("+19108308627"), y).create();
-        // System.out.println(y + "aaaaaaa");
+        System.out.println(y + "aaaaaaa");
         code = y;
 
     }
 
     private void insertTeam1() {
-       
+        
+        
         try {
             String query = "insert into teams (team_name,team_tag,team_mail,team_reg, `user_id`) values ('" + tfTeamName.getText() + "','" + tfTeamTag.getText() + "','" + tfTeamMail.getText() + "','" + tfTeamReg.getText() + "', '" + this.UID + "')";
             PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

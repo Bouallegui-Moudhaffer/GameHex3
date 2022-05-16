@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author Yasmine Daly
+ * @author Amine Selmi
  */
 public class HomeController implements Initializable {
 
@@ -71,9 +71,6 @@ public class HomeController implements Initializable {
     @FXML
     private void OnTournamentsClickedfront(MouseEvent event) {
         try {
-
-            
-
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent parent = FXMLLoader.load(getClass().getResource("/com/gamehex/view/TournamentChooseFront.fxml"));
             Scene scene = new Scene(parent);
@@ -125,6 +122,19 @@ public class HomeController implements Initializable {
     private void OnUserClickedfront(MouseEvent event) throws IOException {
          FXMLLoader fxmlLoader = new FXMLLoader();
             Parent parent = FXMLLoader.load(getClass().getResource("/com/gamehex/view/UserFXML.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setTitle("Coaching");
+            //stage.getIcons().add(new Image("com/gamehex/assets/NotePad.png"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+    }
+    
+    @FXML
+    void OnShopClickedfront(MouseEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent parent = FXMLLoader.load(getClass().getResource("/com/gamehex/view/ShopHomepage.fxml"));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setTitle("Coaching");

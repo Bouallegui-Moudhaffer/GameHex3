@@ -225,7 +225,6 @@ public class Coach_UIController implements Initializable {
                     Notifications.create()
                             .title("Rank Not High Enough")
                             .text("We only accept Coaches with a SoloQ Rank of Diamond or Higher!")
-                            .threshold(3, Notifications.create().title("Collapsed Notification"))
                             .showWarning();
                 }
             }

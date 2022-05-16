@@ -41,7 +41,7 @@
                         <Pane layoutX="316.0" layoutY="106.0" prefHeight="202.0" prefWidth="179.0">
                            <children>
                               <Button mnemonicParsing="false" opacity="0.7" prefHeight="190.0" prefWidth="168.0" styleClass="button2" />
-                              <Circle layoutX="84.0" layoutY="87.0" radius="50.0" strokeType="INSIDE">
+                              <Circle layoutX="84.0" layoutY="87.0" onMouseClicked="#OnShopClickedfront" radius="50.0" strokeType="INSIDE">
                                  <stroke>
                                     <LinearGradient endX="1.0" endY="1.0">
                                        <stops>

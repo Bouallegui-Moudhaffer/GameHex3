@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/second%20try/GameHex/src/com/gamehex/controller/Coach_UIController.java</file>
-            <file>file:/D:/second%20try/GameHex/src/com/gamehex/controller/createSession_UI_Controller.java</file>
+            <file>file:/D:/second%20try/GameHex/src/com/gamehex/dao/SupplierDAO.java</file>
+            <file>file:/D:/second%20try/GameHex/src/com/gamehex/controller/LoadProductsController.java</file>
+            <file>file:/D:/second%20try/GameHex/src/com/gamehex/controller/LoginFXMLController.java</file>
+            <file>file:/D:/second%20try/GameHex/src/com/gamehex/controller/UserController.java</file>
         </group>
     </open-files>
 </project-private>

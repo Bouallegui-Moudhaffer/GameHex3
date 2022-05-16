@@ -85,6 +85,19 @@ public class DashboardHomeController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    
+      @FXML
+    void onClickShopAdmin(MouseEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent parent = FXMLLoader.load(getClass().getResource("/com/gamehex/view/ShopAdmin.fxml"));
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.setTitle("Coaching");
+        //stage.getIcons().add(new Image("com/gamehex/assets/NotePad.png"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
 
    
 
